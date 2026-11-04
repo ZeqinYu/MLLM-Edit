@@ -22,7 +22,7 @@ MLLM-Edit consists of two complementary versions covering natural and text image
 
 Each tampered image is paired with its corresponding original image and editing prompt. Pixel-level tampering masks are provided for samples with valid annotations.
 
-**Download:** 🤗 [Hugging Face Dataset](https://huggingface.co/datasets/Zegkim/MLLM-Edit)
+**Download:** 🤗 [Hugging Face](https://huggingface.co/datasets/Zegkim/MLLM-Edit)
 
 ## Code
 
