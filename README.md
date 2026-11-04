@@ -13,14 +13,14 @@ MLLM-Edit is constructed through three stages: real image–prompt preparation, 
 
 ## Dataset
 
-MLLM-Edit consists of two complementary versions covering natural and text images. Each tampered image is paired with its corresponding original image and editing prompt. Pixel-level tampering masks are provided for samples with valid annotations.
-
+MLLM-Edit consists of two complementary versions covering natural and text images. 
 | Version | Model Source | MLLM-based Editors | Images |
 |---|---|---|---:|
 | **MLLM-Edit-v1** | Open-source (8) | Qwen-IEPlus, OmniGen-v2, BAGEL, FLUX.2 [klein] Base 9B, Step1X-Edit v1.2, LongCat-Image, GLM-Image, JoyAI-Image-Edit | 20,026 |
 | **MLLM-Edit-v1** | Closed-source (10) | HunyuanImage 3.0, Kling Image 3.0, Wan 2.6 Image, Vidu Q2, Seedream 4.5, Jimeng 4.6, GPT Image 2/1.5, Grok Imagine, Reve V1, Nano Banana Pro (Gemini 3 Pro) | 24,260 |
 | **MLLM-Edit-v2** | Open-source (5) | Qwen-IEPlus, FLUX.2 [klein] Base 9B, Step1X-Edit v1.2, LongCat-Image, JoyAI-Image-Edit | 197,927 |
 
+Each tampered image is paired with its corresponding original image and editing prompt. Pixel-level tampering masks are provided for samples with valid annotations.
 
 **Download:** 🤗 [Hugging Face Dataset](https://huggingface.co/datasets/Zegkim/MLLM-Edit)
 
