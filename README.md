@@ -7,9 +7,9 @@ Zeqin Yu, Ye Tian, Jian Zhang, Jiangqun Ni, Lanyun Zhu, Alex Kot, Xudong Jiang
 
 ![MLLM-Edit Pipeline](./assets/pipeline.png)
 
-MLLM-Edit is constructed through three stages:
-real image–prompt preparation, tampered image generation,
-and semi-automatic tampering mask annotation.
+MLLM-Edit is a large-scale benchmark for image forgery detection and localization (IFDL) under MLLM-based editing, comprising over 240k tampered images from diverse natural and text image sources. It covers 18 MLLM-based editors (8 open-source and 10 closed-source) and three tampering types: insertion, removal, and replacement.
+
+MLLM-Edit is constructed through three stages: real image–prompt preparation, tampered image generation, and semi-automatic tampering mask annotation.
 
 ## Dataset
 
