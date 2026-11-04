@@ -10,7 +10,7 @@ MLLM-Edit is a large-scale benchmark for image forgery detection and localizatio
 - **MLLM-Edit-v1:** Evaluation benchmark covering 18 MLLM-based editors.
 - **MLLM-Edit-v2:** Training dataset covering five open-source editors.
 
-Dataset: [Hugging Face](https://huggingface.co/datasets) | [Kaggle](https://www.kaggle.com/datasets/masofish/mllm-edit)
+Dataset: [Hugging Face](https://huggingface.co/datasets)
 
 ## Code
 
