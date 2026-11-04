@@ -2,18 +2,18 @@
 Official implementation of MLLM-Edit from our NeurIPS 2026 paper “MLLM-Edit: Benchmarking Image Forgery Detection and Localization under MLLM-based Editing”. <br>
 Zeqin Yu, Ye Tian, Jian Zhang, Jiangqun Ni, Lanyun Zhu, Alex Kot, Xudong Jiang  
 
-## Dataset
+### Dataset
 
 - **MLLM-Edit-v1:** Evaluation benchmark covering 18 MLLM-based editors.
 - **MLLM-Edit-v2:** Training dataset covering five open-source editors.
 
 Dataset: [Hugging Face](https://huggingface.co/datasets/Zegkim/MLLM-Edit)
 
-## Code
+### Code
 
 - **[Mask Annotation Pipeline](./MLLM-Edit_Mask_Annotation_Pipeline):** Semi-automatic tampering mask annotation with geometric alignment, multi-threshold refinement, and human verification.
 
-## Citation
+### Citation
 
 If you find MLLM-Edit useful for your research, please consider citing our paper:
 
