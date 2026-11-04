@@ -1,4 +1,5 @@
 # MLLM-Edit
+[![Hugging Face](https://img.shields.io/badge/🤗%20Hugging%20Face-Dataset-FFD21E)](https://huggingface.co/datasets/Zegkim/MLLM-Edit) [![GitHub](https://img.shields.io/badge/GitHub-Code-181717?logo=github&logoColor=white)](https://github.com/ZeqinYu/MLLM-Edit)  
 Official implementation of MLLM-Edit from our NeurIPS 2026 paper “MLLM-Edit: Benchmarking Image Forgery Detection and Localization under MLLM-based Editing”. <br>
 Zeqin Yu, Ye Tian, Jian Zhang, Jiangqun Ni, Lanyun Zhu, Alex Kot, Xudong Jiang  
 
@@ -6,8 +7,6 @@ Zeqin Yu, Ye Tian, Jian Zhang, Jiangqun Ni, Lanyun Zhu, Alex Kot, Xudong Jiang
 
 - **MLLM-Edit-v1:** Evaluation benchmark covering 18 MLLM-based editors.
 - **MLLM-Edit-v2:** Training dataset covering five open-source editors.
-
-[![Hugging Face](https://img.shields.io/badge/🤗%20Hugging%20Face-Dataset-FFD21E)](https://huggingface.co/datasets/Zegkim/MLLM-Edit)
 
 ## Code
 
