@@ -12,7 +12,7 @@ Zeqin Yu, Ye Tian, Jian Zhang, Jiangqun Ni, Lanyun Zhu, Alex Kot, Xudong Jiang
 
 - **[Mask Annotation Pipeline](./MLLM-Edit_Mask_Annotation_Pipeline):** Semi-automatic tampering mask annotation with geometric alignment, multi-threshold refinement, and human verification.
 
-## Citation
+## ✍️ Citation
 
 If you find MLLM-Edit useful for your research, please consider citing our paper:
 
