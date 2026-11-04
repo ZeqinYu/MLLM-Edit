@@ -33,7 +33,7 @@ We provide the semi-automatic mask annotation pipeline used to construct MLLM-Ed
 
 **[Mask Annotation Pipeline](./MLLM-Edit_Mask_Annotation_Pipeline)**
 
-**Download:** <img src="https://cdn.simpleicons.org/github" width="16" height="16" alt="GitHub"> [Mask Annotation Pipeline](./MLLM-Edit_Mask_Annotation_Pipeline)
+**Available:** <img src="https://cdn.simpleicons.org/github" width="16" height="16" alt="GitHub"> [Mask Annotation Pipeline](./MLLM-Edit_Mask_Annotation_Pipeline)
 
 ## ✍️ Citation
 
