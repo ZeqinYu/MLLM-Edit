@@ -26,9 +26,12 @@ Each tampered image is paired with its corresponding original image and editing 
 
 **Download:** 🤗 [Hugging Face](https://huggingface.co/datasets/Zegkim/MLLM-Edit)
 
+
 ## Code
 
-- **[Mask Annotation Pipeline](./MLLM-Edit_Mask_Annotation_Pipeline):** Semi-automatic tampering mask annotation with geometric alignment, multi-threshold refinement, and human verification.
+We provide the semi-automatic mask annotation pipeline used to construct MLLM-Edit, including candidate mask generation, a human annotation interface, and demonstration samples.
+
+**[Mask Annotation Pipeline](./MLLM-Edit_Mask_Annotation_Pipeline)**
 
 ## ✍️ Citation
 
