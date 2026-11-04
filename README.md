@@ -2,9 +2,6 @@
 Official implementation of MLLM-Edit from our NeurIPS 2026 paper “MLLM-Edit: Benchmarking Image Forgery Detection and Localization under MLLM-based Editing”. <br>
 Zeqin Yu, Ye Tian, Jian Zhang, Jiangqun Ni, Lanyun Zhu, Alex Kot, Xudong Jiang  
 
-
-MLLM-Edit is a large-scale benchmark for image forgery detection and localization (IFDL) under MLLM-based editing. It contains over 240k tampered images covering natural and text images, 18 MLLM-based editors, and three tampering types: insertion, removal, and replacement.
-
 ## Dataset
 
 - **MLLM-Edit-v1:** Evaluation benchmark covering 18 MLLM-based editors.
