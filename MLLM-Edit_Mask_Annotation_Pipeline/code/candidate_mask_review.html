@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Mask 标注工具</title>
+    <style>
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Times New Roman", serif; }
+        body { padding-top: 180px; padding-left: 16px; padding-right: 16px; padding-bottom: 20px; background: #f5f5f5; }
+        .sticky-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: #f5f5f5; padding: 10px 16px 12px; border-bottom: 1px solid #ddd; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        .top-bar { display: flex; gap: 10px; margin-bottom: 6px; align-items: center; flex-wrap: wrap; }
+        
+        /* ========== 所有按钮大小统一 + 字体和Prompt一样大 ========== */
+        button {
+            padding: 4px 8px;
+            font-size: 26px;
+            font-family: "Times New Roman", serif;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            background: #fff;
+            height: 40px;
+            min-width: 180px;
+        }
+        .jump-input {
+            padding: 4px 8px;
+            font-size: 26px;
+            font-family: "Times New Roman", serif;
+            width: 200px;
+            height: 40px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .btn-primary { background: #2d8cf0; color: white; border-color: #2d8cf0; }
+        .btn-primary:disabled { background: #ccc; border-color: #ccc; cursor: not-allowed; }
+        .btn-danger  { background: #e74c3c; color: white; border-color: #e74c3c; }
+        .btn-none    { background: #f39c12; color: white; border-color: #f39c12; }
+        .btn-none:disabled { background: #ccc; border-color: #ccc; cursor: not-allowed; }
+
+        /* 状态栏文字也统一 */
+        .info { font-size: 26px; color: #444; margin-top:8px; font-family: "Times New Roman", serif; }
+        #status { font-size: 26px; color: #888; margin-left: 6px; font-family: "Times New Roman", serif; }
+        
+        .img-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin-bottom: 6px; }
+        .card { background: white; padding: 5px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+        /* Real / Align / Tamper */
+        .card h4 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 3px;
+            text-align: center;
+            font-family: "Times New Roman", serif;
+        }
+
+        .card img { width: 100%; border-radius: 3px; background: #eee; display: block; cursor: zoom-in; }
+        .mask-item { background: white; padding: 5px; border-radius: 5px; text-align: center; border: 3px solid transparent; cursor: pointer; transition: border-color 0.15s; }
+        .mask-item:hover { border-color: #aad4f5; }
+        .mask-item.selected { border-color: #2d8cf0; background: #e8f4ff; }
+        .mask-item.confirmed { border-color: #27ae60; background: #eafaf1; }
+        .mask-item img { width: 100%; border-radius: 3px; background: #222; display: block; margin-bottom: 3px; }
+        
+        .mask-item .thr-label {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            font-family: "Times New Roman", serif;
+        }
+        .mask-item.selected .thr-label { color: #2d8cf0; }
+        .mask-item.confirmed { color: #27ae60; }
+
+        /* 放大弹窗 */
+        .img-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-label {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            background: rgba(0,0,0,0.5);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 26px;
+            font-family: "Times New Roman", serif;
+        }
+        .modal-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            border: none;
+            width: 80px;
+            height: 100px;
+            font-size: 50px;
+            cursor: pointer;
+            border-radius: 8px;
+            z-index: 2;
+        }
+        .modal-arrow:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .prev-arrow { left: 20px; }
+        .next-arrow { right: 20px; }
+        .img-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        /* Prompt */
+        #promptDisplay {
+            margin-top:10px;
+            font-size: 28px;
+            color:#2255aa;
+            min-height:30px;
+            line-height: 1.4;
+            margin-bottom:30px;
+            font-family: "Times New Roman", serif;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- 放大弹窗 -->
+<div class="img-modal" id="imgModal">
+    <div class="modal-label" id="modalLabel">原图</div>
+    <button class="modal-arrow prev-arrow" id="prevArrow">❮</button>
+    <img id="modalImg" alt="放大图">
+    <button class="modal-arrow next-arrow" id="nextArrow">❯</button>
+</div>
+
+<div class="sticky-header">
+    <div class="top-bar">
+        <button id="pickDirBtn" class="btn-primary">Select directory</button>
+        <button id="prevBtn" class="btn-primary" disabled> Previous</button>
+        
+        <input type="number" id="jumpInput" class="jump-input" placeholder="Jump to row" disabled>
+        <button id="jumpBtn" class="btn-primary" disabled>Jump</button>
+
+        <button id="exportBtn" class="btn-danger" disabled>Export CSV</button>
+
+        <span id="status"></span>
+        <div style="margin-left:auto;"></div>
+        <button id="noneBtn" class="btn-none" disabled>No suitable threshold</button>
+    </div>
+    <div class="info">
+        <span id="progressText"></span>
+        Current: <strong id="currentFile">-</strong>
+        &nbsp;|&nbsp; Selected: <strong id="selectedLabel" style="color:#27ae60">-</strong>
+    </div>
+    <div id="promptDisplay"></div>
+</div>
+
+<div class="img-grid" id="imgGrid">
+    <div class="card"><img id="imgReal" alt="原图"><h4>Real</h4></div>
+    <div class="card"><img id="imgAlign" alt="对齐图"><h4>Real-Align</h4></div>
+    <div class="card"><img id="imgFake" alt="编辑图"><h4>Tamper</h4></div>
+</div>
+
+<script>
+let rootHandle   = null;
+let allFileNames = [];
+let currentIndex = 0;
+let annotations  = {};
+let dirHandles   = {};
+
+const pickDirBtn    = document.getElementById("pickDirBtn");
+const prevBtn       = document.getElementById("prevBtn");
+const noneBtn       = document.getElementById("noneBtn");
+const exportBtn     = document.getElementById("exportBtn");
+const status        = document.getElementById("status");
+const progressText  = document.getElementById("progressText");
+const currentFile   = document.getElementById("currentFile");
+const selectedLabel = document.getElementById("selectedLabel");
+const imgReal       = document.getElementById("imgReal");
+const imgFake       = document.getElementById("imgFake");
+const imgAlign      = document.getElementById("imgAlign");
+const imgGrid       = document.getElementById("imgGrid");
+
+const imgModal      = document.getElementById("imgModal");
+const modalImg      = document.getElementById("modalImg");
+const modalLabel    = document.getElementById("modalLabel");
+const prevArrow     = document.getElementById("prevArrow");
+const nextArrow     = document.getElementById("nextArrow");
+
+const jumpInput     = document.getElementById("jumpInput");
+const jumpBtn       = document.getElementById("jumpBtn");
+
+const imgList = [
+  { el: imgReal, label: "原图" },
+  { el: imgAlign, label: "对齐图" },
+  { el: imgFake, label: "篡改编辑图" }
+];
+let modalCurrent = 0;
+
+[imgReal, imgAlign, imgFake].forEach((item, idx) => {
+  item.ondblclick = () => {
+    if (!item.src) return;
+    modalCurrent = idx;
+    updateModal();
+    imgModal.style.display = "flex";
+  };
+});
+
+function updateModal() {
+  const curr = imgList[modalCurrent];
+  modalImg.src = curr.el.src;
+  modalLabel.textContent = curr.label;
+}
+
+prevArrow.onclick = (e) => {
+  e.stopPropagation();
+  modalCurrent = (modalCurrent - 1 + imgList.length) % imgList.length;
+  updateModal();
+};
+nextArrow.onclick = (e) => {
+  e.stopPropagation();
+  modalCurrent = (modalCurrent + 1) % imgList.length;
+  updateModal();
+};
+
+imgModal.onclick = (e) => {
+  if (e.target === imgModal) {
+    imgModal.style.display = "none";
+    modalImg.src = "";
+  }
+};
+
+jumpBtn.onclick = () => {
+    if (!allFileNames.length) return;
+    let num = parseInt(jumpInput.value);
+    if (isNaN(num)) return;
+    let idx = num - 1;
+    if (idx < 0) idx = 0;
+    if (idx >= allFileNames.length) idx = allFileNames.length - 1;
+    currentIndex = idx;
+    showImage();
+};
+jumpInput.onkeydown = (e) => {
+    if (e.key === "Enter") jumpBtn.click();
+};
+
+pickDirBtn.onclick = async () => {
+    try {
+        rootHandle = await window.showDirectoryPicker({ mode: "read" });
+        status.textContent = "已选择：" + rootHandle.name + "，加载中...";
+        await loadData();
+    } catch(e) { status.textContent = "已取消"; }
+};
+
+async function loadData() {
+    dirHandles = {}; allFileNames = []; currentIndex = 0; annotations = {};
+    try {
+        dirHandles.real = await rootHandle.getDirectoryHandle("0_real");
+        for (const sub of ["1_fakesample", "align"]) {
+            try { dirHandles[sub] = await rootHandle.getDirectoryHandle(sub); } catch(e) {}
+        }
+        dirHandles.masks = {};
+        try {
+            const maskRoot = await rootHandle.getDirectoryHandle("mask");
+            for await (const [name, handle] of maskRoot.entries()) {
+                if (handle.kind === "directory" && !isNaN(name))
+                    dirHandles.masks[name] = handle;
+            }
+        } catch(e) {}
+
+        window.promptMap = {};
+        try {
+            const csvFh   = await rootHandle.getFileHandle("prompt.csv");
+            const csvText = await (await csvFh.getFile()).text();
+            const lines   = csvText.split("\n").filter(l => l.trim());
+            const header  = lines[0].split(",");
+            const alignIdx  = header.findIndex(h => h.trim() === "align_path");
+            const promptIdx = header.findIndex(h => h.trim() === "prompt");
+            if (alignIdx >= 0 && promptIdx >= 0) {
+                for (let i = 1; i < lines.length; i++) {
+                    const cols = lines[i].match(/(".*?"|[^,]+)(?=,|$)/g) || lines[i].split(",");
+                    const alignVal  = (cols[alignIdx]  || "").trim().replace(/^"|"$/g, "");
+                    const promptVal = (cols[promptIdx] || "").trim().replace(/^"|"$/g, "").replace(/\bAdd\b/g, "Insert").replace(/\bADD\b/g, "Insert").replace(/\bAppend\b/g, "Insert").replace(/\bDelete\b/g, "Remove").replace(/\bDELETE\b/g, "Remove");
+                    const base = alignVal.split(/[\/]/).pop().replace(/\.[^.]+$/, "");
+                    if (base) window.promptMap[base] = promptVal;
+                }
+            }
+        } catch(e) { console.warn("prompt.csv 读取失败:", e); }
+
+        for await (const [name, handle] of dirHandles.real.entries()) {
+            if (handle.kind === "file" && /\.(png|jpg|jpeg|webp|tif)$/i.test(name))
+                allFileNames.push(name);
+        }
+        allFileNames.sort();
+
+        if (!allFileNames.length) { status.textContent = "0_real 无图片"; return; }
+        status.textContent = "Total " + allFileNames.length ;
+        prevBtn.disabled = false;
+        noneBtn.disabled = false;
+        exportBtn.disabled = false;
+
+        jumpInput.disabled = false;
+        jumpBtn.disabled = false;
+
+        showImage();
+    } catch(e) {
+        status.textContent = "错误：" + e.message;
+        console.error(e);
+    }
+}
+
+async function showImage() {
+    if (currentIndex < 0) currentIndex = 0;
+    if (currentIndex >= allFileNames.length) { status.textContent = "全部完成！"; return; }
+
+    const fname = allFileNames[currentIndex];
+    const stem  = fname.replace(/\.[^.]+$/, "");
+    currentFile.textContent = fname;
+    progressText.textContent = "[" + (currentIndex+1) + "/" + allFileNames.length + "]  ";
+
+    const saved = annotations[fname];
+    selectedLabel.textContent = saved !== undefined ? "τ=" + saved : "-";
+
+    setImg(imgReal,  dirHandles.real,      fname);
+    setImg(imgFake,  dirHandles["1_fakesample"], stem + ".png");
+    setImg(imgAlign, dirHandles["align"],  stem + ".png");
+
+    const promptEl = document.getElementById("promptDisplay");
+    const prompt   = (window.promptMap || {})[stem] || "";
+    promptEl.textContent = prompt ? "Prompt: " + prompt : "";
+
+    await buildMaskGrid(stem, fname);
+}
+
+async function setImg(el, dirHandle, fname) {
+    if (!dirHandle) { el.src = ""; return; }
+    try {
+        const fh = await dirHandle.getFileHandle(fname);
+        el.src = URL.createObjectURL(await fh.getFile());
+    } catch(e) { el.src = ""; }
+}
+
+async function buildMaskGrid(stem, fname) {
+    while (imgGrid.children.length > 3) imgGrid.removeChild(imgGrid.lastChild);
+    document.querySelectorAll(".mask-row").forEach(el => el.remove());
+
+    const thresholds = Object.keys(dirHandles.masks).map(Number).sort((a,b) => a - b);
+    const savedThr   = annotations[fname];
+
+    async function makeItem(thr) {
+        const item = document.createElement("div");
+        item.className = "mask-item" + (savedThr === thr ? " confirmed" : "");
+
+        const img = document.createElement("img");
+        img.alt = "τ=" + thr;
+        try {
+            const fh = await dirHandles.masks[thr].getFileHandle(stem + ".png");
+            img.src  = URL.createObjectURL(await fh.getFile());
+        } catch(e) { img.style.opacity = "0.3"; }
+
+        const lbl = document.createElement("div");
+        lbl.className   = "thr-label";
+        lbl.textContent = "τ=" + thr;
+
+        item.appendChild(img);
+        item.appendChild(lbl);
+
+        item.onclick = () => {
+            document.querySelectorAll(".mask-item.selected").forEach(el => el.classList.remove("selected"));
+            item.classList.add("selected");
+            selectedLabel.textContent = "τ=" + thr + "(Double-click to confirm and go to next)";
+        };
+
+        item.ondblclick = () => {
+            annotations[fname] = thr;
+            selectedLabel.textContent = "τ=" + thr;
+            currentIndex++;
+            showImage();
+        };
+
+        return item;
+    }
+
+    for (const thr of thresholds.slice(0, 5))
+        imgGrid.appendChild(await makeItem(thr));
+
+    const rest = thresholds.slice(5);
+    for (let i = 0; i < rest.length; i += 8) {
+        const row = document.createElement("div");
+        row.className = "img-grid mask-row";
+        for (const thr of rest.slice(i, i + 8))
+            row.appendChild(await makeItem(thr));
+        imgGrid.parentNode.appendChild(row);
+    }
+}
+
+prevBtn.onclick = () => { currentIndex = Math.max(0, currentIndex - 1); showImage(); };
+
+noneBtn.onclick = () => {
+    const fname = allFileNames[currentIndex];
+    if (!fname) return;
+    annotations[fname] = null;
+    selectedLabel.textContent = "None";
+    currentIndex++;
+    showImage();
+};
+
+exportBtn.onclick = () => {
+    let csv = "filename,selected_threshold\n";
+    for (const fname of allFileNames)
+        csv += fname + "," + (annotations[fname] === null ? "None" : annotations[fname] !== undefined ? annotations[fname] : "") + "\n";
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv"}));
+    a.download = "annotation_result.csv";
+    a.click();
+};
+</script>
+</body>
+</html>
