@@ -33,6 +33,10 @@ We provide the semi-automatic mask annotation pipeline used to construct MLLM-Ed
 
 **Available:** <img src="https://cdn.simpleicons.org/github" width="16" height="16" alt="GitHub"> [Mask Annotation Pipeline](./MLLM-Edit_Mask_Annotation_Pipeline)
 
+## 📧 Contact
+
+We welcome researchers to use MLLM-Edit and appreciate citations to our paper. If you have any questions or encounter any issues, please feel free to contact us at [kimjyu@foxmail.com](mailto:kimjyu@foxmail.com).
+
 ## ✍️ Citation
 
 If you find MLLM-Edit useful for your research, please consider citing our paper:
