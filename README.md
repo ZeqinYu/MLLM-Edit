@@ -45,7 +45,7 @@ If you find MLLM-Edit useful for your research, please consider citing our paper
 @inproceedings{yu2026mllmedit,
   title={MLLM-Edit: Benchmarking Image Forgery Detection and Localization under MLLM-based Editing},
   author={Yu, Zeqin and Tian, Ye and Zhang, Jian and Ni, Jiangqun and Zhu, Lanyun and Kot, Alex and Jiang, Xudong},
-  booktitle={Advances in Neural Information Processing Systems},
+  booktitle={The Fortieth Annual Conference on Neural Information Processing Systems},
   year={2026}
 }
 ```
