@@ -35,7 +35,7 @@ MLLM-Edit/
 │   │   └── {Model}/       # 18 editors: 8 open-source + 10 closed-source
 │   │       ├── Real/      # Original images
 │   │       ├── Tamper/    # Tampered images
-│   │       ├── Mask/      # Corresponding binary masks
+│   │       ├── Mask/      # Corresponding pixel-level binary masks
 │   │       └── prompt.csv # Editing prompts
 │   └── Text/
 │       └── {Model}/       
