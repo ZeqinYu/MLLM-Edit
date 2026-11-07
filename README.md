@@ -26,6 +26,39 @@ Each tampered image is paired with its corresponding original image and editing 
 
 **Download:** 🤗 [Hugging Face](https://huggingface.co/datasets/Zegkim/MLLM-Edit)
 
+**Structure:**
+
+```text
+MLLM-Edit/
+├── MLLM-Edit-v1/
+│   ├── Natural/
+│   │   └── {Model}/       # 18 editors: 8 open-source + 10 closed-source
+│   │       ├── Real/      # Original images
+│   │       ├── Tamper/    # Tampered images
+│   │       ├── Mask/      # Corresponding binary masks
+│   │       └── prompt.csv # Editing prompts
+│   └── Text/
+│       └── {Model}/       
+│           ├── Real/
+│           ├── Tamper/
+│           ├── Mask/
+│           └── prompt.csv
+│
+└── MLLM-Edit-v2/
+    ├── Natural/
+    │   └── {Model}/       # 5 open-source editors
+    │       ├── Real/
+    │       ├── Tamper/
+    │       ├── Mask/
+    │       └── prompt.csv
+    └── Text/
+        └── {Model}/       
+            ├── Real/
+            ├── Tamper/
+            ├── Mask/
+            └── prompt.csv
+```
+
 
 ## Code
 
