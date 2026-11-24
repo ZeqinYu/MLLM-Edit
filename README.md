@@ -4,7 +4,7 @@ Official implementation of MLLM-Edit from our NeurIPS 2026 paper “MLLM-Edit: B
 Zeqin Yu, Ye Tian, Jian Zhang, Jiangqun Ni, Lanyun Zhu, Alex Kot, Xudong Jiang  
 
 ## 📰 News
-* **[2026.11.03]** 🔥 We have released MLLM-Edit v1 on Hugging Face. MLLM-Edit v2 is ready and will be uploaded once our bandwidth quota resets.
+* **[2026.11.03]** 🔥 We have released MLLM-Edit v1 on Hugging Face. MLLM-Edit v2 is ready but substantially larger, and will be uploaded once our bandwidth quota resets.
 
 ## Overview
 
