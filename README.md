@@ -3,6 +3,9 @@ Official implementation of MLLM-Edit from our NeurIPS 2026 paper “MLLM-Edit: B
 [![Hugging Face](https://img.shields.io/badge/🤗%20Hugging%20Face-Dataset-FFD21E)](https://huggingface.co/datasets/Zegkim/MLLM-Edit) [![GitHub](https://img.shields.io/badge/GitHub-Code-181717?logo=github&logoColor=white)](https://github.com/ZeqinYu/MLLM-Edit) [![Paper](https://img.shields.io/badge/Paper-NeurIPS%202026-0078D4?logo=readthedocs&logoColor=white)](https://openreview.net/pdf?id=KwlZaWL5xN)  
 Zeqin Yu, Ye Tian, Jian Zhang, Jiangqun Ni, Lanyun Zhu, Alex Kot, Xudong Jiang  
 
+## 📰 News
+* **[2026.11.03]** 🔥 We have released MLLM-Edit v1 on Hugging Face. MLLM-Edit v2 is ready and will be uploaded once our bandwidth quota resets.
+
 ## Overview
 
 ![MLLM-Edit Pipeline](./assets/pipeline.svg)
